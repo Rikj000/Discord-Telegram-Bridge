@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { discordClient, discordWebhookClient } from './backends/discord.js';
-import { telegram, telegramGetFileURL } from './backends/telegram.js';
+import { telegram, telegramGetFileURL, telegramGetProfilePic } from './backends/telegram.js';
 
 import { enable_heroku } from './utils/heroku.js';
 
@@ -46,8 +46,8 @@ discordClient.on("message", message => {
 });
 
 // Telegram -> Discord handler
-telegram.on("message", function (message) {
-	console.log(message)
+telegram.on("message", async function (message) {
+	//console.log(message)
 	if (message.chat.id != TELEGRAM_CHAT_ID) {
 		return;
 	}
@@ -65,59 +65,43 @@ telegram.on("message", function (message) {
 		username += ` (@${message.from.username})`;
 	}
 
-	// Get profile picture (or use Telegram one as fallback)
-	let getProfilePic = new Promise(function (resolve, reject) {
-		var profilePhotos = telegram.getUserProfilePhotos({ user_id: message.from.id });
-		profilePhotos.then(function (data) {
-			if (data.total_count > 0) {
-				var file = telegram.getFile({ file_id: data.photos[0][0].file_id });
-				file.then(function (result) {
-					resolve(telegramGetFileURL(result.file_path));
-				});
-			} else {
-				resolve("https://telegram.org/img/t_logo.png");
-			}
+	let profileUrl = await telegramGetProfilePic(message);
+
+	var text;
+	var fileId;
+
+	if (!message.document && !message.photo && !message.sticker) {
+		if (!message.text) {
+			return;
+		}
+		text = message.text;
+	} else {
+		text = message.caption;
+		if (message.document) {
+			fileId = message.document.file_id;
+		} else if (message.sticker) {
+			fileId = message.sticker.file_id;
+		} else if (message.photo) {
+			fileId = message.photo[0].file_id;
+		}
+	}
+
+	if (text) {
+		text = text.replace(/@everyone/g, "[EVERYONE]").replace(/@here/g, "[HERE]");
+	}
+
+	if (!fileId) {
+		await discordWebhookClient.send(text, {
+			username: username,
+			avatarURL: profileUrl,
 		});
-	});
-	getProfilePic.then(function (profileUrl) {
-		var text;
-		var fileId;
-
-		if (!message.document && !message.photo && !message.sticker) {
-			if (!message.text) {
-				return;
-			}
-			text = message.text;
-		} else {
-			text = message.caption;
-			if (message.document) {
-				fileId = message.document.file_id;
-			} else if (message.sticker) {
-				fileId = message.sticker.file_id;
-			} else if (message.photo) {
-				fileId = message.photo[0].file_id;
-			}
-		}
-
-		if (text) {
-			text = text.replace(/@everyone/g, "[EVERYONE]").replace(/@here/g, "[HERE]");
-		}
-
-		if (!fileId) {
-			discordWebhookClient.send(text, {
-				username: username,
-				avatarURL: profileUrl,
-			});
-		} else {
-			var file = telegram.getFile({ file_id: fileId });
-			file.then(function (data) {
-				var fileUrl = telegramGetFileURL(data.file_path);
-				discordWebhookClient.send(text, {
-					username: username,
-					avatarURL: profileUrl,
-					files: [fileUrl],
-				});
-			});
-		};
-	});
+	} else {
+		var file = await telegram.getFile({ file_id: fileId });
+		var fileUrl = telegramGetFileURL(file.file_path);
+		discordWebhookClient.send(text, {
+			username: username,
+			avatarURL: profileUrl,
+			files: [fileUrl],
+		});
+	};
 });
