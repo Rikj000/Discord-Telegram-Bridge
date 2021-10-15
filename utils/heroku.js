@@ -1,5 +1,5 @@
 import express from "express";
-import * as fetch from "node-fetch";
+import fetch from "node-fetch";
 
 const wakeUpDyno = (url, interval = 25, callback) => {
 	const milliseconds = interval * 60000;
@@ -27,8 +27,11 @@ const wakeUpDyno = (url, interval = 25, callback) => {
 	}, milliseconds);
 };
 
-const PORT = process.env.PORT;
-const DYNO_URL = process.env.DYNO_URL || "https://google.com";
+const HEROKU_PORT = process.env.PORT;
+const HEROKU_DYNO_URL = process.env.HEROKU_DYNO_URL;
+
+console.log("Heroku port: " + HEROKU_PORT);
+console.log("Heroku dyno URL: " + HEROKU_DYNO_URL);
 
 const app = express();
 
@@ -36,7 +39,7 @@ export function enable_heroku() {
 	app.get("/", function (req, res) {
 		res.send("Hello world! you have reached the secret inner workings of the FILC BOT");
 	});
-	app.listen(PORT, () => {
-		wakeUpDyno(DYNO_URL); // will start once server starts
+	app.listen(HEROKU_PORT, () => {
+		wakeUpDyno(HEROKU_DYNO_URL); // will start once server starts
 	})
 }
