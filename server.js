@@ -82,7 +82,7 @@ telegram.on("message", async function (message) {
 		} else if (message.sticker) {
 			fileId = message.sticker.file_id;
 		} else if (message.photo) {
-			fileId = message.photo[0].file_id;
+			fileId = message.photo[2].file_id;
 		}
 	}
 
