@@ -78,8 +78,20 @@ telegram.on("message", async function (message) {
 			return;
 		}
 		text = message.text;
+
+		// convert bold, italic & hyperlink Telegram text for Discord markdown
+		if (message.entities) {
+			text = convert_text_telegram_to_discord(text, message.entities);
+		}
+
 	} else {
 		text = message.caption;
+
+		// convert bold, italic & hyperlink Telegram text for Discord markdown
+		if (message.caption_entities) {
+			text = convert_text_telegram_to_discord(text, message.caption_entities);
+		}
+
 		if (message.document) {
 			fileId = message.document.file_id;
 		} else if (message.sticker) {
@@ -106,5 +118,42 @@ telegram.on("message", async function (message) {
 			avatarURL: profileUrl,
 			files: [fileUrl],
 		});
-	};
+	}
 });
+
+function convert_text_telegram_to_discord(text, entities) {
+	var convert;
+	var start_format;
+	var end_format;
+	var section_offset = 0
+	var section_end;
+	var section_start;
+
+	entities.forEach(({type, offset, length, url}) => {
+		convert = true;
+		if (type == 'bold') {
+			start_format = '\*\*';
+			end_format = '\*\*';
+		} else if(type == 'italic') {
+			start_format = '\_';
+			end_format = '\_';
+		} else if(type == 'text_link') {
+			start_format = '\*\*';
+			end_format = '\*\* (<' + url + '>)';
+		} else {
+			// Don't convert other entities
+			convert = false;
+		}
+
+		if (convert) {
+			section_start = offset + section_offset;
+			section_end = offset + length + section_offset;
+			// First add end_format, so it won't mess up the string indexes for start_format
+			text = text.slice(0, section_end) + end_format + text.slice(section_end);
+			text = text.slice(0, section_start) + start_format + text.slice(section_start);
+			section_offset += start_format.length + end_format.length;
+		}
+	});
+
+	return text
+}
