@@ -42,7 +42,7 @@ discordClient.on("message", message => {
 	telegram.sendMessage({
 		chat_id: TELEGRAM_CHAT_ID,
 		text: text,
-		parse_mode: 'MarkdownV2'
+		parse_mode: 'markdown'
 	});
 });
 
