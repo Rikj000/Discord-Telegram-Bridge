@@ -16,5 +16,6 @@
     - `DISCORD_CHANNEL_ID` - The Discord ChannelId of the channel you want to bridge
     - `DISCORD_WEBHOOK_ID` and `DISCORD_WEBHOOK_TOKEN`. Those are part of the webhook URL you copied. `DISCORD_WEBHOOK_ID` is a 18 characters long int, `DISCORD_WEBHOOK_TOKEN` is a ~70 chars long randomly generated string. Those are seperated by slashes in the url.
     - If you use Heroku, set `HEROKU_DYNO_URL` to make the dyno not timeout. You can find your dyno's URL in Heroku dashboard -> Open app
+    - If you need to forward Discord Bot messages -> Telegram set `DISCORD_FORWARD_BOT` to `true`  (will cause duplicate messages in bridges that forward in both directions)
 
 * Run `npm start` or `node server.js` and you're set!
