@@ -34,7 +34,7 @@ discordClient.on("message", message => {
 	// attachmentUrls is empty when there are no attachments so we can be just lazy
 	var finalMessageContent = message.content.replace(/<@.*>/gi, '');
 
-	var text = `[DISCORD] ${message.author.username}#${message.author.discriminator}: `;
+	var text = `**[DISCORD] ${message.author.username} (${message.author.username}#${message.author.discriminator}):**\n`;
 	text += finalMessageContent
 	text += ` ${attachmentUrls.join(' ')}`;
 	text += mentioned_usernames.join(" ");
