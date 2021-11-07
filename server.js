@@ -79,17 +79,17 @@ telegram.on("message", async function (message) {
 		}
 		text = message.text;
 
-		// convert bold & italic Telegram text for Discord markdown
+		// convert bold, italic & hyperlink Telegram text for Discord markdown
 		if (message.entities) {
-			text = convert_bold_italic_telegram_text(text, message.entities);
+			text = convert_text_telegram_to_discord(text, message.entities);
 		}
 
 	} else {
 		text = message.caption;
 
-		// convert bold & italic Telegram text for Discord markdown
+		// convert bold, italic & hyperlink Telegram text for Discord markdown
 		if (message.caption_entities) {
-			text = convert_bold_italic_telegram_text(text, message.caption_entities);
+			text = convert_text_telegram_to_discord(text, message.caption_entities);
 		}
 
 		if (message.document) {
@@ -121,7 +121,7 @@ telegram.on("message", async function (message) {
 	}
 });
 
-function convert_bold_italic_telegram_text(text, entities) {
+function convert_text_telegram_to_discord(text, entities) {
 	var convert;
 	var start_format;
 	var end_format;
