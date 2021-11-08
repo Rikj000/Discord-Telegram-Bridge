@@ -9,6 +9,7 @@ enable_heroku();
 // import env variables
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const DISCORD_CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
+const DISCORD_FORWARD_BOT = (process.env.DISCORD_FORWARD_BOT === 'true')
 
 console.log("Telegram chat id: " + TELEGRAM_CHAT_ID);
 console.log("Discord channel id: " + DISCORD_CHANNEL_ID);
@@ -18,7 +19,8 @@ discordClient.on("message", message => {
 	// the program currently check if the message's from a bot to check for duplicates.
 	// This isn't the best method but it's good enough.
 	// A webhook counts as a bot in the discord api, don't ask me why.
-	if (message.channel.id !== DISCORD_CHANNEL_ID || message.author.bot == true) {
+	// Ignore messages from bots if DISCORD_FORWARD_BOT is 'false'
+	if (message.channel.id !== DISCORD_CHANNEL_ID || (message.author.bot && !DISCORD_FORWARD_BOT)) {
 		return;
 	}
 
@@ -50,7 +52,7 @@ discordClient.on("message", message => {
 
 // Telegram -> Discord handler
 telegram.on("message", async function (message) {
-	//console.log(message)
+	// console.log(message)
 	if (message.chat.id != TELEGRAM_CHAT_ID) {
 		return;
 	}
