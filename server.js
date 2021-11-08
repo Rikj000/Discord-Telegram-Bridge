@@ -16,6 +16,7 @@ console.log("Discord channel id: " + DISCORD_CHANNEL_ID);
 
 // Discord -> Telegram handler
 discordClient.on("message", message => {
+
 	// the program currently check if the message's from a bot to check for duplicates.
 	// This isn't the best method but it's good enough.
 	// A webhook counts as a bot in the discord api, don't ask me why.
@@ -43,15 +44,22 @@ discordClient.on("message", message => {
 	text += ` ${attachmentUrls.join(' ')}`;
 	text += mentioned_usernames.join(" ");
 
-	telegram.sendMessage({
-		chat_id: TELEGRAM_CHAT_ID,
-		text: text,
-		parse_mode: 'markdown'
-	});
+	try {
+		telegram.sendMessage({
+			chat_id: TELEGRAM_CHAT_ID,
+			text: text,
+			parse_mode: 'markdown'
+		});
+	}
+	catch(err) {
+		console.log(err.message);
+		return;
+	}
 });
 
 // Telegram -> Discord handler
 telegram.on("message", async function (message) {
+
 	// console.log(message)
 	if (message.chat.id != TELEGRAM_CHAT_ID) {
 		return;
@@ -107,19 +115,25 @@ telegram.on("message", async function (message) {
 		text = text.replace(/@everyone/g, "[EVERYONE]").replace(/@here/g, "[HERE]");
 	}
 
-	if (!fileId) {
-		await discordWebhookClient.send(text, {
-			username: username,
-			avatarURL: profileUrl,
-		});
-	} else {
-		var file = await telegram.getFile({ file_id: fileId });
-		var fileUrl = telegramGetFileURL(file.file_path);
-		discordWebhookClient.send(text, {
-			username: username,
-			avatarURL: profileUrl,
-			files: [fileUrl],
-		});
+	try {
+		if (!fileId) {
+			await discordWebhookClient.send(text, {
+				username: username,
+				avatarURL: profileUrl,
+			});
+		} else {
+			var file = await telegram.getFile({ file_id: fileId });
+			var fileUrl = telegramGetFileURL(file.file_path);
+			discordWebhookClient.send(text, {
+				username: username,
+				avatarURL: profileUrl,
+				files: [fileUrl],
+			});
+		}
+	}
+	catch(err) {
+		console.log(err.message);
+		return;
 	}
 });
 
