@@ -1,3 +1,8 @@
+# Ignore CKP Bridge specific files
+ckp-bridges-ubuntu
+ckp-bridges-ubuntu.pub
+deploy-ckp-bridges.sh
+
 # Logs
 logs
 *.log
