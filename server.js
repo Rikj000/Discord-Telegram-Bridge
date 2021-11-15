@@ -4,7 +4,9 @@ import { telegram, telegramGetFileURL, telegramGetProfilePic } from './backends/
 
 import { enable_heroku } from './utils/heroku.js';
 
-enable_heroku();
+if ("HEROKU_DYNO_URL" in process.env) {
+	enable_heroku();
+}
 
 // import env variables
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
