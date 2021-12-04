@@ -8,6 +8,7 @@ export var telegram = new TelegramApi({
 	token: TELEGRAM_BOT_TOKEN,
 	updates: {
 		enabled: true,
+		pooling_timeout: 5000
 	},
 });
 
