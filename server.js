@@ -109,7 +109,8 @@ telegram.on("message", async function (message) {
 		} else if (message.sticker) {
 			fileId = message.sticker.file_id;
 		} else if (message.photo) {
-			fileId = message.photo[2].file_id;
+			// pick the last/largest picture in the list
+			fileId = message.photo[message.photo.length - 1].file_id;
 		}
 	}
 
