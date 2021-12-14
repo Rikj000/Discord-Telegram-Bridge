@@ -17,8 +17,8 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "express": "^4.17.1",
-    "natsvora-telegram-bot-api": "^1.3.3",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^3.1.0",
+    "node-telegram-bot-api": "^0.56.0"
   },
   "repository": {
     "url": "https://github.com/SebaUbuntu/discord-telegram-bridge"
