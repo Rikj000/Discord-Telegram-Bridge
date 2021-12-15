@@ -47,11 +47,7 @@ discordClient.on("message", message => {
 	text += mentioned_usernames.join(" ");
 
 	try {
-		telegram.sendMessage({
-			chat_id: TELEGRAM_CHAT_ID,
-			text: text,
-			parse_mode: 'markdown'
-		});
+		telegram.sendMessage(TELEGRAM_CHAT_ID, text, {parse_mode: 'markdown'});
 	}
 	catch(err) {
 		console.log(err.message);
@@ -60,7 +56,7 @@ discordClient.on("message", message => {
 });
 
 // Telegram -> Discord handler
-telegram.on("message", async function (message) {
+telegram.on("message", async (message) => {
 
 	// console.log(message)
 	if (message.chat.id != TELEGRAM_CHAT_ID) {
@@ -119,18 +115,20 @@ telegram.on("message", async function (message) {
 	}
 
 	try {
-		if (!fileId) {
+		var fileUrl = "";
+		if (fileId) {
+			var file = await telegram.getFile(fileId);
+			fileUrl = telegramGetFileURL(file.file_path);
+
+			if (fileUrl != "") {
+				discordWebhookClient.send(text, {
+					username: username,	avatarURL: profileUrl, files: [fileUrl]
+				});
+			}
+		}
+		if (!fileId || fileUrl == "") {
 			await discordWebhookClient.send(text, {
-				username: username,
-				avatarURL: profileUrl,
-			});
-		} else {
-			var file = await telegram.getFile({ file_id: fileId });
-			var fileUrl = telegramGetFileURL(file.file_path);
-			discordWebhookClient.send(text, {
-				username: username,
-				avatarURL: profileUrl,
-				files: [fileUrl],
+				username: username,	avatarURL: profileUrl
 			});
 		}
 	}
