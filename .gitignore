@@ -121,3 +121,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore JetBrains IDE
+/.idea/
+
+# Ignore CKP Bridges
+*ckp*
