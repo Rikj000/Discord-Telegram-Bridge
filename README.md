@@ -13,7 +13,7 @@
     </a>
 </p>
 
-A **support fork** for the Official `Discord` ↔️ `Telegram` Bridge. 
+`Discord` ↔️ `Telegram` Bridge. 
 Created for the **Crypto Knowledge Pool Bridges**!
 
 #### Setup:
