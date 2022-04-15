@@ -1,10 +1,6 @@
 # Discord-Telegram-bridge
 <p align="left">
-    <a href="https://discord.gg/8bB837HRPb">
-        <img src="https://img.shields.io/discord/901483173928661053?label=Discord%20-%20Project%20Cataclysm&logo=discord" alt="Join Project Cataclysm on Discord">
-    </a> <a href="https://telegram.me/CKP_Robot?start=1684098549">
-        <img src="https://img.shields.io/badge/Telegram_--_Crypto_Knowledge_Pool-Join-blue?logo=telegram" alt="Join Crypto Knowledge Pool on Telegram">
-    </a> <a href="https://www.iconomi.com/register?ref=JdFzz">
+    <a href="https://www.iconomi.com/register?ref=JdFzz">
         <img src="https://img.shields.io/badge/ICONOMI-Join-blue?logo=bitcoin&logoColor=white" alt="ICONOMI - The world’s largest crypto strategy provider">
     </a> <a href="https://github.com/Rikj000/Discord-Telegram-Bridge/blob/development/LICENSE">
         <img src="https://img.shields.io/github/license/Rikj000/Discord-Telegram-Bridge?label=License&logo=gnu" alt="GNU General Public License">
