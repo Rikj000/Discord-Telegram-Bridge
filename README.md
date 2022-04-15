@@ -9,8 +9,7 @@
     </a>
 </p>
 
-`Discord` ↔️ `Telegram` Bridge. 
-Created for the **Crypto Knowledge Pool Bridges**!
+`Discord` ↔️ `Telegram` Bridge
 
 #### Setup:
 > If you want to run it on heroku, you can just click the button below. 
