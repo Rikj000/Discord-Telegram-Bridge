@@ -1,6 +1,6 @@
 # Discord-Telegram-bridge
 <p align="left">
-    <a href="https://www.iconomi.com/register?ref=JdFzz">
+    <a href="https://www.iconomi.com/register?ref=zQQPK">
         <img src="https://img.shields.io/badge/ICONOMI-Join-blue?logo=bitcoin&logoColor=white" alt="ICONOMI - The world’s largest crypto strategy provider">
     </a> <a href="https://github.com/Rikj000/Discord-Telegram-Bridge/blob/development/LICENSE">
         <img src="https://img.shields.io/github/license/Rikj000/Discord-Telegram-Bridge?label=License&logo=gnu" alt="GNU General Public License">
